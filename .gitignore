@@ -1,0 +1,5 @@
+.venv
+database
+HUPD/
+HUPD_sample/
+src/__pycache__/

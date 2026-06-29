@@ -1,0 +1,16 @@
+{
+  "name": "python-postgres-dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-ossdata.vscode-postgresql"
+      ]
+    }
+  }
+}

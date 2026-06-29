@@ -1,0 +1,33 @@
+ "1. A repeater for relaying information in a two-way communication system utilizing a power line distribution network as the communication medium, said repeater comprising: coupling means for coupling said repeater to t
+he power lines at positions adjacent a power distribution node; first receiving means for receiving a signal in a first band of frequencies from a first direction and producing a pulse indicative thereof; timing means c
+oupled to said first receiving means for controlling the operation of said repeater and starting said operation in response to said pulse; first tone generating means, operatively connected to said first receiving means
+ and responsive to said pulse, for generating at least one tone in a second band of frequencies; second receiving means, for receiving a signal in a third band of frequencies from a second direction and producing a puls
+e indicative thereof; second tone generating means, operatively connected to said second receiving means and responsive to the output thereof for generating at least one tone in a fourth band of frequencies; first and s
+econd amplifying means coupled to said first and second tone generating means, respectively, for amplifying the outputs thereof; and frequency dividing means connected to the inputs of said first and second receiving me
+ans and to the outputs of said first and second amplifying means for isolating the signals from and to said first and second amplifying means and said first and second receiving means, respectively, and connecting said 
+first and second amplifying and said first and second receiving means to said coupling means.
+ 2. The repeater as set forth in claim 1 wherein said power distribution node comprises a step-down transformer and said coupling means is connected to the primary and secondary thereof, to by-pass the transformer at si
+gnal frequencies.
+ 3. The repeater as set forth in claim 1 wherein said tone generating means comprises logic controlled transfer oscillators operating in different frequency bands.
+ 4. The repeater as set forth in claim 1 wherein a portion of said repeater operates continuously and the remainder operates for the duration of said pulse from said first receiving means.
+ 5. The repeater as set forth in claim 1 and further comprising: priority signal receiving means for receiving a priority signal from said second direction; third tone generating means operatively connected to said prio
+rity signal receiving means for regenerating said priority signal by generating at least one tone in a fifth band of frequencies, the output of said third tone generating means being coupled to said second amplifying me
+ans; and logic means for actuating said repeater to enable the transmission of said regenerated priority signal.
+ 6. The repeater as set forth in claim 5 wherein said fifth band of frequencies and said fourth band of frequencies are the same.
+ 7. The repeater as set forth in claim 5 said logic means comprising: starting means, coupled to said priority signal receiving means, for turning on said repeater in response to a priority signal; and logic timing mean
+s for turning off said repeater a predetermined time after receiving said priority signal.
+ 8. The repeater as set forth in claim 7 and further comprising: switch means, coupled to said priority signal receiving means, for interrupting other communications by said repeater when a priority signal is received.
+ 9. The repeater as set forth in claim 1 wherein said first receiving means comprises: at least two tone receivers, each responsive to a particular frequency in said first band; and And logic means connected to the outp
+uts of said two receivers, thereby enabling said repeater to be addressed."
+ 10. The repeater as set forth in claim 9 and further comprising: address code storage means for storing an address code singular to the repeater; and logic means interconnecting said address code storage means, said second receiving means, and said second tone generating means for causing said second tone generating means to alternately generate tones under the control of said second receiving means and said address code storage means.
+ 11. The repeater as set forth in claim 10 wherein said logic means is connected to a timing means to cause said address code to be repeated a predetermined number of times at fixed intervals.
+ 12. A plurality of repeaters as set forth in claim 10 connected in at least two voltage levels of said power line distribution network wherein at least two repeaters at a lower level are connected to one repeater at th
+e higher level, thereby forming a tree-like network of repeaters superimposed on said power distribution network.
+ 13. A plurality of repeaters as set forth in claim 12 wherein said power distribution node comprises a step-down transformer, the lowest level of repeaters is coupled to only one side of said transformer, and said sign
+als are coupled by the interwinding capacitance to the other side of said transformer.
+ 14. A plurality of repeaters as set forth in claim 13 wherein said signals have a frequency of less than 15 Khz.
+ 15. A plurality of repeaters as set forth in claim 12 wherein a timing means in the lower level causes said address tones to occur at different time intervals from those at other levels thereby interleaving said repeat
+ed address tones.
+ 16. A plurality of repeaters as set forth in claim 15 wherein said timing means in each repeater comprises a counter having at least one tap thereon, the position of the taps being different at each level, to cause the
+ timing of the repeated address codes to differ for each level.
+ "
