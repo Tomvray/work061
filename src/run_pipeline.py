@@ -10,11 +10,11 @@ from database import Database
 class Pipeline:
     def __init__(self):
         self.db = Database(
-            host="localhost",
+            host="db",
             port=5432,
-            database="postgres",
+            database="patents_db",
             user="postgres",
-            password=" ",
+            password="postgres"
         )
         self.model = BGEM3FlagModel('BAAI/bge-m3',  
                        use_fp16=True) # Setting use_fp16 to True speeds up computation with a slight performance degradation

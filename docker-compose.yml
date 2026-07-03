@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    # gpus: all
+    gpus: all
     volumes:
       - .:/workspace
     working_dir: /workspace

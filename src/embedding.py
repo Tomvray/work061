@@ -8,12 +8,21 @@ class Embedder:
     def __init__(self):
         self.model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B", device="cuda")
         self.document_embeddings = {}
-        self.document_ids = []
 
     def save_embedding(self, patent_id, embedding):
         """Save the embedding to the database."""
-        self.document_embeddings[patent_id] = embedding
-        self.document_ids.append(patent_id)
+        self.document_embeddings[patent_id] = embedding[0]
+    
+    def save_embeddings(self, patent_ids, embeddings):
+        """Save the embeddings to the database."""
+        for patent_id, embedding in zip(patent_ids, embeddings):
+            self.document_embeddings[patent_id] = embedding
+
+    def write_embeddings_to_file(self):
+        """Write the embeddings to a file."""
+        with open("embeddings.", "w") as f:
+            for patent_id, embedding in self.document_embeddings.items():
+                f.write(f"{patent_id}\t{embedding.tolist()}\n")
 
     def embed_claims(self, claims: list[str]):
         """Embed a list of claims using the model. We use a prompt to help the model understand the context of the claims."""
@@ -21,9 +30,8 @@ class Embedder:
 
     def embed_documents(self, documents: list[str], patent_ids: list[str]):
         """Embed a list of documents using the model."""
-        embeddings = self.model.encode(documents, batch_size=16, show_progress_bar=True)
-        self.document_embeddings.update(zip(patent_ids, embeddings))
-        self.document_ids.extend(patent_ids)
+        embeddings = self.model.encode(documents, batch_size=8, show_progress_bar=True)
+        self.save_embeddings(patent_ids, embeddings)
         return embeddings
 
     def similarity(self, query_embeddings, document_embeddings):
@@ -94,29 +102,15 @@ if __name__ == "__main__":
     app_ids = []
     application_claims = []
 
-    for app_id in citations.keys():
-        print(f"Application ID: {app_id}")
-        claims = get_app_claims(app_id)
-        print(claims[:100])
-        app_ids.append(app_id)
-        application_claims.append(claims)
-
-        for patent_id in citations[app_id]:
-            #print(f"  Cited Patent ID: {patent_id}")
-            claims = db.get_claims_str(patent_id)
-           # print(patent_id, claims[:100])
-
-            patents_ids.append(patent_id)
-            docs.append(claims)
-
-    print(f"Total applications: {len(app_ids)}")
-    print(f"Total patents: {len(patents_ids)}")
-    print(patents_ids[:10])
-    for i, app_id in enumerate(app_ids):
-        print(f"Application ID: {app_id}")
-        score = embedder.rank_documents(application_claims[i], docs, patents_ids, app_ids)
-        #print(score)
-        for patent_id in citations[app_id]:
-            #get the rank where patent_id is located in the score list
-            rank = next((s["rank"] for s in score if s["patent_id"] == patent_id), None)
-            print(f"  Cited Patent ID: {patent_id}, Rank: {rank}")
+    embedder = Embedder()
+    text1 ="0.claims: 1. A method for processing data, comprising: receiving input data; analyzing the input data to extract relevant features; applying a machine learning model to the extracted features to generate predictions; and outputting the predictions. 2. The method of claim 1, wherein the machine learning model is a neural network. 3. The method of claim 1, further comprising storing the predictions in a database for future reference."
+    text2 = "0.claims: 1. A system for managing inventory, comprising: a database for storing inventory data; a user interface for displaying inventory information; a processing unit for analyzing inventory data and generating reports; and a communication module for transmitting inventory information to external devices. 2. The system of claim 1, wherein the processing unit is configured to generate alerts when inventory levels fall below a predetermined threshold. 3. The system of claim 1, further comprising a mobile application for accessing inventory information remotely."
+    embedding1 = embedder.embed_claims([text1])
+    embedding2 = embedder.embed_claims([text2])
+    print(embedding1.shape)
+    print(len(embedding1))
+    print(embedding1)
+    embedder.save_embedding("test_patent", embedding1)
+    embedder.save_embedding("test_patent_2", embedding2)
+    print(embedder.document_embeddings)
+    print(embedder.get_similar_documents(text2, top_k=5))

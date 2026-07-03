@@ -1,4 +1,5 @@
 .venv
+.vscode
 HUPD/
 HUPD_sample/
 src/__pycache__/

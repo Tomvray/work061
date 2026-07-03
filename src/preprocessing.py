@@ -37,7 +37,6 @@ def split_data_set(db):
     test_year = 2017
     train_years = list(range(2008, 2017))
 
-    
 if __name__=="__main__":
     from database import Database
 
