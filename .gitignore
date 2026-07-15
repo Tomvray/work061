@@ -5,5 +5,6 @@ HUPD_sample/
 data/
 src/__pycache__/
 *.egg-info
-notebooks/
+notebooks/saves/
+notebooks/*npy
 *.tsv
