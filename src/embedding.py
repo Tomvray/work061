@@ -30,8 +30,8 @@ class Embedder:
 
     def embed_documents(self, documents: list[str], patent_ids: list[str]):
         """Embed a list of documents using the model."""
-        embeddings = self.model.encode(documents, batch_size=8, show_progress_bar=True)
-        self.save_embeddings(patent_ids, embeddings)
+        embeddings = self.model.encode(documents, batch_size=4, show_progress_bar=True)
+        #self.save_embeddings(patent_ids, embeddings)
         return embeddings
 
     def similarity(self, query_embeddings, document_embeddings):

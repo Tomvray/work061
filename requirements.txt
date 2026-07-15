@@ -10,3 +10,5 @@ peft>=0.15.2
 torchvision
 pillow
 psycopg2
+matplotlib
+jupyter

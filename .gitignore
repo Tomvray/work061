@@ -2,4 +2,8 @@
 .vscode
 HUPD/
 HUPD_sample/
+data/
 src/__pycache__/
+*.egg-info
+notebooks/
+*.tsv

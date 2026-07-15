@@ -4,11 +4,11 @@ CREATE TABLE IF NOT EXISTS claims (
     claim_sequence INTEGER,
     claim_text TEXT,
     dependent TEXT,
-    claim_number VARCHAR(16),
+    claim_number INTEGER,
     exemplary BOOLEAN
 );
 
-CREATE INDEX IF NOT EXISTS idx_claims_patent_id ON claims(patent_id);
+CREATE INDEX IF NOT EXISTS idx_claims_patent_id ON claims(patent_id, claim_number);
 
 CREATE TABLE IF NOT EXISTS office_actions (
     app_id VARCHAR(255),

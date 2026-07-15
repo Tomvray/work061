@@ -7,6 +7,7 @@ RUN apt update && apt install -y \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
+
 WORKDIR /workspace
 
 COPY requirements.txt .

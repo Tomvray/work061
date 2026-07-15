@@ -4,7 +4,7 @@ import pandas as pd
 """This module provides a Database class for connecting to psql patents database and execute queroies"""
 
 class Database:
-    def __init__(self, host, port, database, user, password):
+    def __init__(self, host="db", port=5432, database="patents_db", user="postgres", password="postgres"):
         self.connection = psycopg2.connect(
             host=host,
             port=port,
@@ -32,11 +32,25 @@ class Database:
 
         query = f"SELECT claim_text, claim_number FROM claims WHERE patent_id = '{patent_id}' ORDER BY claim_number"
         claims = self.execute_query(query)
-        
-        #Protect if claims 1 is missing, return None
-        if claims[0][1] != 1 and claims[0][1] != 0:
+
+        if int(claims[0][1]) != 1 and int(claims[0][1]) != 0:
             return None
         return "\n".join([claim[0] for claim in claims])
+    
+    def get_first_claim(self, patent_id):
+        """RETURN THE FIRST CLAIM FOR A GIVEN PATENT ID"""
+        
+        query = f"SELECT claim_text FROM claims WHERE patent_id = '{patent_id}' AND claim_number = 1"
+        result = self.execute_query(query)
+        if result:
+            claim_text = result[0][0]
+            query = f"SELECT claim_text FROM claims WHERE patent_id = '{patent_id}' AND claim_number = 0"
+            result = self.execute_query(query)
+            if result:
+                claim_text = result[0][0] + "\n" + claim_text
+            return claim_text
+        else:
+            return None
     
     def get_claims_ids(self):
         """return all patent IDs that have claims in the database"""
@@ -49,7 +63,7 @@ class Database:
     def get_application_ids(self):
         """return list of all application IDs in the database"""
     
-        df = pd.read_csv("database/list_apps.csv")
+        df = pd.read_csv("/workspace/database/list_apps.csv")
         #convert app_id column to string
         df["app_id"] = df["app_id"].astype(str)
         return df["app_id"].tolist()
@@ -57,7 +71,7 @@ class Database:
     def get_application_ids_year(self, year):
         """return list of all application IDs in the database for a given year"""
     
-        df = pd.read_csv("database/list_apps.csv")
+        df = pd.read_csv("/workspace/database/list_apps.csv")
         df_year = df[df["year"] == year]
         print("types of app_id and year columns:", df_year["app_id"].dtype, df_year["year"].dtype)
         return df_year["app_id"].tolist()
@@ -117,6 +131,27 @@ class Database:
             clean_citations[app_id].append(cited_patent)
         return clean_citations
 
+    def office_actions_split(self):
+        """return a dictionary with train, val and test dataframes with the following columns: app_id, parsed, mail_dt. The split is based on the mail_dt of the office actions. Train: 2008-2014, val: 2015, test: 2016."""
+        # Validation
+        val_query = "SELECT c.app_id, c.parsed, oa.mail_dt FROM citations c JOIN office_actions oa ON c.app_id = oa.app_id " \
+            "WHERE oa.mail_dt > '2016-01-01' AND c.app_id IN (SELECT app_id FROM applications) AND c.parsed IN (SELECT patent_id FROM claims) group by c.app_id, c.parsed, oa.mail_dt;"
+
+        # Test
+        test_query = "SELECT c.app_id, c.parsed FROM citations c JOIN office_actions oa ON c.app_id = oa.app_id " \
+            "WHERE oa.mail_dt >= '2015-01-01' AND oa.mail_dt <= '2016-01-01' AND c.app_id IN (SELECT app_id FROM applications) AND c.parsed IN (SELECT patent_id FROM claims) group by c.app_id, c.parsed, oa.mail_dt;"
+
+        # Train
+        train_query = "SELECT c.app_id, c.parsed FROM citations c JOIN office_actions oa ON c.app_id = oa.app_id " \
+        "WHERE oa.mail_dt < '2015-01-01' AND c.app_id IN (SELECT app_id FROM applications) AND c.parsed IN (SELECT patent_id FROM claims) group by c.app_id, c.parsed, oa.mail_dt;"
+
+        val_df = self.execute_query(val_query)
+        print(val_df)
+        test_df = self.execute_query(test_query)
+        train_df = self.execute_query(train_query)
+        
+        return {"train": train_df, "val": val_df, "test": test_df}
+
     def close(self):
         self.connection.close()
 
@@ -129,5 +164,6 @@ if __name__ == "__main__":
         user="postgres",
         password="postgres"
     )
-    print(db.get_claims_str('7864457'))
+    claims = db.get_claims_str("5588558")
+    print(claims)
     db.close()

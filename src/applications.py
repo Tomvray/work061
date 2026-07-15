@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import json
 
-app_folder = "HUPD/"
+app_folder = "/workspace/HUPD/"
 range_years = range(2008, 2017)
 
 def get_app_claims(app_id)-> dict:
